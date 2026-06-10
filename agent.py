@@ -9,6 +9,9 @@
 import os, json, smtplib, datetime, time
 from dotenv import load_dotenv
 from duckduckgo_search import DDGS
+from tavily import TavilyClient
+import requests
+from bs4 import BeautifulSoup
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
 
@@ -54,8 +57,40 @@ def clean(text):
     return "".join(c if ord(c) < 128 else " " for c in text)
 
 # ── 4. Web search ─────────────────────────────────────────────────────────────
+def fetch_article(url):
+    """Fetch full text from a URL."""
+    try:
+        headers = {"User-Agent": "Mozilla/5.0"}
+        response = requests.get(url, timeout=5, headers=headers)
+        soup = BeautifulSoup(response.text, "html.parser")
+        paragraphs = soup.find_all("p")
+        text = " ".join(p.get_text() for p in paragraphs[:20])
+        return clean(text[:2000])
+    except:
+        return ""
+    
 def web_search(query, max_results=5):
-    for attempt in range(2):
+    """Try Tavily first, fall back to DuckDuckGo."""
+    try:
+        from tavily import TavilyClient
+        client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+        response = client.search(
+            query=query,
+            search_depth="advanced",
+            max_results=max_results,
+            include_answer=True,
+            include_raw_content=True
+        )
+        results = []
+        for r in response["results"]:
+            results.append(
+                "Title: " + clean(r.get("title", "")) + "\n" +
+                "Content: " + clean(r.get("content", "")) + "\n" +
+                "URL: " + clean(r.get("url", ""))
+            )
+        return "\n\n".join(results)
+    except Exception:
+        # Fallback to DuckDuckGo if Tavily fails
         try:
             with DDGS() as ddgs:
                 results = list(ddgs.text(query, max_results=max_results))
@@ -70,11 +105,8 @@ def web_search(query, max_results=5):
                 )
             return "\n\n".join(formatted)
         except Exception as e:
-            if attempt == 0:
-                time.sleep(3)
-            else:
-                return "Search error: " + str(e)
-
+            return "Search error: " + str(e)
+        
 # ── 5. Send email ─────────────────────────────────────────────────────────────
 def send_email(subject, body):
     try:
@@ -111,12 +143,18 @@ def run_agent(topic):
     )
 
     print("  [Act] Searching the web...")
-    queries = [topic, topic + " latest update", topic + " expert analysis"]
+    queries = [topic, 
+        topic + " latest update 2026", 
+        topic + " expert analysis",
+        topic + " case studies",
+        topic + " challenges and risks",
+        topic + " future trends"
+    ]
     raw_data = []
     for q in queries:
         print("    -> " + q)
         raw_data.append(web_search(q))
-    combined = clean("\n\n===\n\n".join(raw_data)[:5000])
+    combined = clean("\n\n===\n\n".join(raw_data)[:8000])
 
     print("  [Reason] Claude is writing your briefing...")
     system_msg = SystemMessage(content=(
