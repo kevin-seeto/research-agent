@@ -21,3 +21,15 @@ and emails a daily research briefing.
 - API integration (Anthropic, Gmail)
 - Python automation
 - Environment management
+
+## Architecture
+- Multi-angle search: 6 query dimensions per topic
+- Resilient search: Tavily API with DuckDuckGo fallback
+- Deep content: Full article scraping via BeautifulSoup
+- LLM reasoning: Claude Haiku ReAct loop
+- Output: Automated Gmail delivery
+- Memory: JSON session persistence
+- Schedule: Windows Task Scheduler daily automation
+
+## Sample Output
+See sample_output.txt for a real briefing example
