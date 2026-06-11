@@ -157,6 +157,11 @@ def run_agent(topic):
     combined = clean("\n\n===\n\n".join(raw_data)[:8000])
 
     print("  [Reason] Claude is writing your briefing...")
+
+    # Load memory to tell Claude what was already covered
+    mem = load_memory()
+    recent_topics = str(mem["topics_covered"][-5:]) if mem["topics_covered"] else "none"
+
     system_msg = SystemMessage(content=(
         "You are a concise research analyst. Write clear factual briefings. "
         "Use only basic ASCII characters. No special quotes, em dashes, "
@@ -165,6 +170,8 @@ def run_agent(topic):
     ))
     user_msg = HumanMessage(content=(
         "Research topic: " + topic + "\n\n"
+        "Topics already covered in recent runs: " + recent_topics + "\n"
+        "Focus on NEW developments not already covered above.\n\n"
         "Raw search data:\n" + combined + "\n\n"
         "Write a daily research briefing with these sections:\n\n"
         "KEY HEADLINES\n"
