@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Personal Research Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; margin-top: 30px; }
+        p { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<h1>Privacy Policy</h1>
+<p>Last updated: June 2026</p>
+
+<h2>Overview</h2>
+<p>Personal Research Agent is a private automation tool that searches
+the web and delivers research briefings via email. This privacy policy
+explains how the application handles data.</p>
+
+<h2>Data Collection</h2>
+<p>This application does not collect, store, or share any personal
+data from third parties. The only data processed is:</p>
+<ul>
+    <li>Research topics specified by the user in the .env file</li>
+    <li>Web search results from DuckDuckGo and Tavily APIs</li>
+    <li>Email credentials stored locally in the .env file</li>
+    <li>Run history stored locally in memory.json</li>
+</ul>
+
+<h2>Data Storage</h2>
+<p>All data is stored locally on the user's machine. No data is
+transmitted to any server other than:</p>
+<ul>
+    <li>Anthropic API - for LLM reasoning (research topic and
+    search results only)</li>
+    <li>Tavily API - for web search queries</li>
+    <li>DuckDuckGo - for web search queries</li>
+    <li>Gmail SMTP - for email delivery</li>
+</ul>
+
+<h2>Third Party Services</h2>
+<p>This application uses the following third party services:</p>
+<ul>
+    <li>Anthropic Claude API -
+    <a href="https://www.anthropic.com/privacy">Privacy Policy</a></li>
+    <li>Tavily API -
+    <a href="https://tavily.com/privacy">Privacy Policy</a></li>
+    <li>DuckDuckGo -
+    <a href="https://duckduckgo.com/privacy">Privacy Policy</a></li>
+    <li>Google Gmail -
+    <a href="https://policies.google.com/privacy">Privacy Policy</a></li>
+    <li>LinkedIn API -
+    <a href="https://www.linkedin.com/legal/privacy-policy">
+    Privacy Policy</a></li>
+</ul>
+
+<h2>Credentials</h2>
+<p>API keys and email credentials are stored locally in a .env file
+on the user's machine. These credentials are never committed to
+GitHub or shared with any third party.</p>
+
+<h2>Contact</h2>
+<p>For any questions about this privacy policy please contact:
+kcseeto@gmail.com</p>
+
+</body>
+</html>
