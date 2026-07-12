@@ -1,3 +1,5 @@
 .env 
 venv/ 
 memory.json 
+linkedin_draft.txt 
+drafts/ 
