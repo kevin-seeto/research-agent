@@ -3,3 +3,9 @@ venv/
 memory.json 
 linkedin_draft.txt 
 drafts/ 
+old/
+__pycache__/
+*.pyc
+*.txt.bak
+agent_backup.txt
+python
