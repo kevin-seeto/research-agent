@@ -245,7 +245,10 @@ def run_agent(topic):
         "[2-3 URLs from the search data]"
     ))
 
-    response = llm.invoke([system_msg, user_msg])
+    response = llm.invoke(
+        [system_msg, user_msg],
+        config={"run_name": "write_briefing", "tags": ["briefing"]},
+    )
     briefing = clean(response.content)
 
     # Second Claude call - write LinkedIn post within 2800 char limit
@@ -272,7 +275,10 @@ def run_agent(topic):
             "Research briefing:\n" + briefing
         ))
 
-    linkedin_response = llm.invoke([system_msg, linkedin_msg])
+    linkedin_response = llm.invoke(
+        [system_msg, linkedin_msg],
+        config={"run_name": "write_linkedin_post", "tags": ["linkedin"]},
+    )
     linkedin_post = clean(linkedin_response.content)
 
     # Verify length and ask Claude to shorten if needed
@@ -292,7 +298,10 @@ def run_agent(topic):
             "- Do not include any URLs, links, http, https, www or domain names\n\n"
             "Post to shorten:\n" + linkedin_post
         ))
-        linkedin_response = llm.invoke([system_msg, shorten_msg])
+        linkedin_response = llm.invoke(
+            [system_msg, shorten_msg],
+            config={"run_name": "shorten_linkedin_post", "tags": ["linkedin", "retry"]},
+        )
         linkedin_post = clean(linkedin_response.content)
 
     return briefing, linkedin_post
