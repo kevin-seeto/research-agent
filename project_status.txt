@@ -1,0 +1,42 @@
+PROJECT: AI Research Digest - Personal Research Agent
+GitHub: https://github.com/kevin-seeto/research-agent
+Live page: https://kevin-seeto.github.io/research-agent/privacy-policy.html
+
+STACK:
+- Python 3.12
+- LangChain + Claude Haiku (claude-haiku-4-5-20251001)
+- Tavily API (primary search) + DuckDuckGo (fallback)
+- BeautifulSoup (web scraping)
+- Gmail SMTP (email delivery)
+- LinkedIn API (ugcPosts endpoint)
+- Windows Task Scheduler (automation)
+- JSON session memory
+
+WHAT IT DOES:
+1. Searches web across 6 query angles
+2. Scrapes full article content
+3. Synthesises briefing via Claude ReAct loop
+4. Emails full briefing with sources
+5. Generates LinkedIn post (2800 char limit, no links, question at end)
+6. Saves LinkedIn draft to drafts/ folder for manual approval
+7. post_now.py posts approved draft to LinkedIn
+
+KEY FILES:
+- agent.py - main agent
+- post_now.py - LinkedIn posting with approval
+- .env - credentials (never commit)
+- memory.json - session history
+- drafts/ - LinkedIn draft files
+
+NEXT STEPS TO MAKE LESS BASIC:
+1. Add LangSmith tracing for observability
+2. Replace memory.json with ChromaDB vector memory
+3. Add Flask web dashboard showing past briefings
+4. Add multi-topic support
+5. Add Docker containerisation
+
+KNOWN ISSUES SOLVED:
+- xa0 character was in Gmail App Password (typed manually to fix)
+- Used raw SMTP instead of MIME to avoid encoding issues
+- Two agent.py files caused confusion (now resolved)
+- LinkedIn API needs userinfo endpoint not v2/me for Person ID
