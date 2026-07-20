@@ -1,4 +1,5 @@
-.env 
+.env*
+!.env.example
 venv/ 
 memory.json 
 linkedin_draft.txt 
@@ -8,4 +9,7 @@ __pycache__/
 *.pyc
 *.txt.bak
 agent_backup.txt
-python
+*_old.txt
+*_backup.txt
+*.bak
+agent_log.txtagent_log.txt
